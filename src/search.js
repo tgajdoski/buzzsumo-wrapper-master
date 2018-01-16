@@ -1,5 +1,6 @@
-function searcher(type, query) {
-  return this.request(`${this.apiURL}${type}?q=${query}`);
+function searcher(type, params) {
+ // console.log("TYPE ", type, "PARAMS" , params);
+  return this.request(`${this.apiURL}${type}`, params);
 }
 
 export default function search() {

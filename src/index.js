@@ -24,17 +24,32 @@ export default class BuzzSumoWrapper {
 
     this.search = search.bind(this)();
   }
+  
+  request(url, params) {
+  
+    var url = `${url}`;
+    var esc = encodeURIComponent;
 
-  request(url) {
-    var url_apiKey = `${url}&api_key=${this.apiKey}`;
+    // console.log('params ' , params);
+
+    var query = Object.keys(params)
+      .map(k => esc(k) + '=' + esc(params[k]))
+      .join('&');
+    
+    // console.log('query ', query);
+    
+    var url_apiKey = `${url}?${query}&api_key=${this.apiKey}`;
+
+    console.log('url_apiKey ', url_apiKey);
     return fetch(url_apiKey).then(toJSON);
-    var request = new Request(`${url}&api_key=${this.apiKey}`, {
-      method: 'GET', 
-      // mode: 'cors', 
-      // headers: new Headers({
-      //   'Content-Type': 'application/json'
-      // })
-    });
+
+    // var request = new Request(`${url}&api_key=${this.apiKey}`, {
+    //   method: 'GET', 
+    //   // mode: 'cors', 
+    //   // headers: new Headers({
+    //   //   'Content-Type': 'application/json'
+    //   // })
+    // });
 
    // return fetch(request).then(toJSON);
    //  return fetch(url, headers).then(toJSON);
