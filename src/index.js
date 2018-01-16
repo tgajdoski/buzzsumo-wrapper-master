@@ -6,16 +6,16 @@ import share from './share';
 import shared_link from './shared_link';
 import trend from './trend';
 
-import {API_UR, API_KEY} from './config';
+import {API_URL, API_KEY} from './config';
 import toJSON from './utils';
 
 export default class BuzzSumoWrapper {
   constructor(options) {
-    this.apiURL = options.apiURL || API_URL;
-    this.apiKey = options.apiKey || API_KEY;
 
-    // this.token = options.token;
-
+    this.apiURL = options.apiURL ? options.apiURL : API_URL;
+    this.apiKey = options.apiKey ? options.apiKey : API_KEY;
+    this.token = options.token;
+   
     this.article = article.bind(this)();
     this.influencer = influencer.bind(this)();
     this.share = share.bind(this)();
@@ -26,11 +26,17 @@ export default class BuzzSumoWrapper {
   }
 
   request(url) {
-    const headers = {
-      headers: {
-        Authorization: `'Bearer ${this.token}'`,
-      },
-    };
-    return fetch(url, headers).then(toJSON);
+    var url_apiKey = `${url}&api_key=${this.apiKey}`;
+    return fetch(url_apiKey).then(toJSON);
+    var request = new Request(`${url}&api_key=${this.apiKey}`, {
+      method: 'GET', 
+      // mode: 'cors', 
+      // headers: new Headers({
+      //   'Content-Type': 'application/json'
+      // })
+    });
+
+   // return fetch(request).then(toJSON);
+   //  return fetch(url, headers).then(toJSON);
   }
 }

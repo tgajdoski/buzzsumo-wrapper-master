@@ -7,15 +7,15 @@ sinonStubPromise(sinon);
 
 global.fetch = require('node-fetch');
 
-import SpotifyWrapper from '../src/index';
+import BuzzSumoWrapper from '../src/index';
 
 describe('Search', () => {
-  let spotify;
+  let buzz;
   let fetchedStub;
   let promise;
 
   beforeEach( () => {
-    spotify = new SpotifyWrapper({
+    buzz = new BuzzSumoWrapper({
       token: 'foo'
     });
 
@@ -28,80 +28,107 @@ describe('Search', () => {
   });
 
   describe('smoke tests', () => {
-    it('should exist the spotify.search.albums method', () => {
-      expect(spotify.search.albums).to.exist;
+    it('should exist the buzz.search.articles method', () => {
+      expect(buzz.search.articles).to.exist;
     });
 
-    it('should exist the spotify.search.artists method', () => {
-      expect(spotify.search.artists).to.exist;
+    it('should exist the buzz.search.influencers method', () => {
+      expect(buzz.search.influencers).to.exist;
     });
 
-    it('should exist the spotify.search.tracks method', () => {
-      expect(spotify.search.tracks).to.exist;
+    it('should exist the buzz.search.shares method', () => {
+      expect(buzz.search.shares).to.exist;
     });
 
-    it('should exist the spotify.search.playlists method', () => {
-      expect(spotify.search.playlists).to.exist;
+    it('should exist the buzz.search.shared_links method', () => {
+      expect(buzz.search.shared_links).to.exist;
+    });
+
+    it('should exist the buzz.search.trends method', () => {
+      expect(buzz.search.trends).to.exist;
     });
   });
 
-  describe('spotify.search.artists', () => {
+ 
+  // articles
+  describe('buzz.search.articles', () => {
     it('should call fetch function', () => {
-      const artists = spotify.search.artists('Incubus');
+      const articles = buzz.search.articles('Qnary');
       expect(fetchedStub).to.have.been.calledOnce;
     });
 
     it('should call fetch with the correct URL', () => {
-      const artists = spotify.search.artists('Incubus');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Incubus&type=artist')
+      const articles1 = buzz.search.articles('Qnary');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/articles.json?q=Qnary&api_key=buzzsumo_api_key')
 
-      const artists2 = spotify.search.artists('Muse');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=artist')
+      const articles2 = buzz.search.articles('AI');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/articles.json?q=AI&api_key=buzzsumo_api_key')
     });
   });
 
-  describe('spotify.search.albums', () => {
+  // influencers
+  describe('buzz.search.influencers', () => {
     it('should call fetch function', () => {
-      const albums = spotify.search.albums('Incubus');
+      const influencers = buzz.search.influencers('Qnary');
       expect(fetchedStub).to.have.been.calledOnce;
     });
 
     it('should call fetch with the correct URL', () => {
-      const albums = spotify.search.albums('Incubus');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Incubus&type=album')
+      const influencers1 = buzz.search.influencers('Qnary');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/influencers.json?q=Qnary&api_key=buzzsumo_api_key')
 
-      const albums2 = spotify.search.albums('Muse');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=album')
+      const influencers2 = buzz.search.influencers('AI');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/influencers.json?q=AI&api_key=buzzsumo_api_key')
     });
   });
 
-  describe('spotify.search.tracks', () => {
+  // shares
+  describe('buzz.search.shares', () => {
     it('should call fetch function', () => {
-      const tracks = spotify.search.tracks('Incubus');
+      const shares = buzz.search.shares('Qnary');
       expect(fetchedStub).to.have.been.calledOnce;
     });
 
     it('should call fetch with the correct URL', () => {
-      const tracks = spotify.search.tracks('Incubus');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Incubus&type=track')
+      const shares1 = buzz.search.shares('Qnary');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/shares.json?q=Qnary&api_key=buzzsumo_api_key')
 
-      const tracks2 = spotify.search.tracks('Muse');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=track')
+      const shares2 = buzz.search.shares('AI');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/shares.json?q=AI&api_key=buzzsumo_api_key')
     });
   });
 
-  describe('spotify.search.playlists', () => {
+  //shared_links
+  describe('buzz.search.shared_links', () => {
     it('should call fetch function', () => {
-      const playlists = spotify.search.playlists('Incubus');
+      const shared_links = buzz.search.shared_links('Qnary');
       expect(fetchedStub).to.have.been.calledOnce;
     });
 
     it('should call fetch with the correct URL', () => {
-      const playlists = spotify.search.playlists('Incubus');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Incubus&type=playlist')
+      const shared_links1 = buzz.search.shared_links('Qnary');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/shared_links.json?q=Qnary&api_key=buzzsumo_api_key')
 
-      const playlists2 = spotify.search.playlists('Muse');
-      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=playlist')
+      const shared_links2 = buzz.search.shared_links('AI');
+      expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/shared_links.json?q=AI&api_key=buzzsumo_api_key')
     });
   });
+
+ //trends
+ describe('buzz.search.trends', () => {
+  it('should call fetch function', () => {
+    const trends = buzz.search.trends('Qnary');
+    expect(fetchedStub).to.have.been.calledOnce;
+  });
+
+  it('should call fetch with the correct URL', () => {
+    const trends1 = buzz.search.trends('Qnary');
+    expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/trends.json?q=Qnary&api_key=buzzsumo_api_key')
+
+    const trends2 = buzz.search.trends('AI');
+    expect(fetchedStub).to.have.been.calledWith('http://api.buzzsumo.com/search/trends.json?q=AI&api_key=buzzsumo_api_key')
+  });
+});
+
+
 });

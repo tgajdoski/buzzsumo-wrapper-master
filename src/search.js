@@ -1,13 +1,13 @@
 function searcher(type, query) {
-  return this.request(`${this.apiURL}/search?q=${query}&type=${type}`);
+  return this.request(`${this.apiURL}${type}?q=${query}`);
 }
 
 export default function search() {
   return {
-    articles: searcher.bind(this, 'article'),
-    influencers: searcher.bind(this, 'influencer'),
-    shares: searcher.bind(this, 'share'),
-    shared_links: searcher.bind(this, 'shared_link'),
-    trends: searcher.bind(this, 'trend'),
+    articles: searcher.bind(this, 'articles.json'),
+    influencers: searcher.bind(this, 'influencers.json'),
+    shares: searcher.bind(this, 'shares.json'),
+    shared_links: searcher.bind(this, 'shared_links.json'),
+    trends: searcher.bind(this, 'trends.json'),
   };
 }

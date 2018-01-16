@@ -1,14 +1,14 @@
 {
-  "name": "spotify-wrapper",
+  "name": "buzzsumo-wrapper",
   "version": "2.0.5",
-  "description": "A wrapper to work with the Spotify Web API.",
+  "description": "A wrapper to work with the Buzzsumo Web API.",
   "main": "lib/index.js",
   "scripts": {
     "clear": "rimraf lib",
     "build": "./node_modules/.bin/babel --out-dir lib src",
     "build:watch": "npm run build -- --watch",
-    "build:umd": "./node_modules/.bin/webpack --output-filename spotify-wrapper.umd.js",
-    "build:umd:min": "./node_modules/.bin/webpack --output-filename spotify-wrapper.umd.min.js -p",
+    "build:umd": "./node_modules/.bin/webpack --output-filename buzzsumo-wrapper.umd.js",
+    "build:umd:min": "./node_modules/.bin/webpack --output-filename buzzsumo-wrapper.umd.min.js -p",
     "build:all": "npm run build && npm run build:umd && npm run build:umd:min",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "prepush": "npm run lint",
@@ -31,21 +31,6 @@
       "tests/**"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/willianjusten/spotify-wrapper.git"
-  },
-  "keywords": [
-    "js",
-    "tdd",
-    "library"
-  ],
-  "author": "Willian Justen <willianjustenqui@gmail.com> (https://willianjusten.com.br/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/willianjusten/spotify-wrapper/issues"
-  },
-  "homepage": "https://github.com/willianjusten/spotify-wrapper#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^8.2.1",

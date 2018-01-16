@@ -7,34 +7,27 @@ chai.use(sinonChai);
 
 global.fetch = require('node-fetch');
 
-import SpotifyWrapper from '../src/index';
+import BuzzSumoWrapper from '../src/index';
 
-describe('SpotifyWrapper Library', function () {
-  it('should create an instance of SpotifyWrapper', () => {
-    let spotify = new SpotifyWrapper({});
-    expect(spotify).to.be.an.instanceof(SpotifyWrapper);
+describe('BuzzSumoWrapper Library', function () {
+  it('should create an instance of BuzzSumoWrapper', () => {
+    let buzz = new BuzzSumoWrapper({});
+    expect(buzz).to.be.an.instanceof(BuzzSumoWrapper);
   });
 
   it('should receive apiURL as an option', () => {
-    let spotify = new SpotifyWrapper({
+    let buzz = new BuzzSumoWrapper({
       apiURL: 'blabla'
     });
 
-    expect(spotify.apiURL).to.be.equal('blabla');
+    expect(buzz.apiURL).to.be.equal('blabla');
   });
 
   it('should use the default apiURL if not provided', () => {
-    let spotify = new SpotifyWrapper({});
-    expect(spotify.apiURL).to.be.equal('https://api.spotify.com/v1');
+    let buzz = new BuzzSumoWrapper({});
+    expect(buzz.apiURL).to.be.equal('http://api.buzzsumo.com/search/');
   });
 
-  it('should receive token as an option', () => {
-    let spotify = new SpotifyWrapper({
-      token: 'foo'
-    });
-
-    expect(spotify.token).to.be.equal('foo');
-  });
 
   describe('request method', () => {
     let stubedFetch;
@@ -50,42 +43,25 @@ describe('SpotifyWrapper Library', function () {
     });
 
     it('should have request method', () => {
-      let spotify = new SpotifyWrapper({});
+      let buzz = new BuzzSumoWrapper({});
 
-      expect(spotify.request).to.exist;
+      expect(buzz.request).to.exist;
     });
 
     it('should call fetch when request', () => {
-      let spotify = new SpotifyWrapper({
-        token: 'foo'
-      });
+      let buzz = new BuzzSumoWrapper({});
 
-      spotify.request('url');
+      buzz.request('url');
       expect(stubedFetch).to.have.been.calledOnce;
     });
 
     it('should call fetch with right url passed', () => {
-      let spotify = new SpotifyWrapper({
-        token: 'foo'
-      });
+      let buzz = new BuzzSumoWrapper({});
 
-      spotify.request('url');
-      expect(stubedFetch).to.have.been.calledWith('url');
+      buzz.request('url');
+      expect(stubedFetch).to.have.been.calledWith('url&api_key=buzzsumo_api_key');
     });
 
-    it('should call fetch with right headers passed', () => {
-      let spotify = new SpotifyWrapper({
-        token: 'foo'
-      });
 
-      const headers = {
-        headers: {
-          Authorization: `'Bearer foo'`,
-        },
-      };
-
-      spotify.request('url');
-      expect(stubedFetch).to.have.been.calledWith('url', headers);
-    });
   });
 });
