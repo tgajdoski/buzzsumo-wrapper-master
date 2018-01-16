@@ -18,7 +18,7 @@ export default class BuzzSumoWrapper {
    
     this.article = article.bind(this)();
     this.influencer = influencer.bind(this)();
-    this.share = share.bind(this)();
+    this.sharer = share.bind(this)();
     this.shared_link = shared_link.bind(this)();
     this.trend = trend.bind(this)();
 
@@ -40,7 +40,7 @@ export default class BuzzSumoWrapper {
     
     var url_apiKey = `${url}?${query}&api_key=${this.apiKey}`;
 
-    console.log('url_apiKey ', url_apiKey);
+   // console.log('url_apiKey ', url_apiKey);
     return fetch(url_apiKey).then(toJSON);
 
     // var request = new Request(`${url}&api_key=${this.apiKey}`, {

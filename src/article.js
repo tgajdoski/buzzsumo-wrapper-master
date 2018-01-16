@@ -13,7 +13,7 @@
     // 11) exact_url only return the exact URL if found.
 
 
-  var _ = require('lodash');
+  let _ = require('lodash');
 
   let ENDPOINT = "articles.json"
   let VALID_PARAMS = ['q', 'result_type', 'page', 'num_days', 'article_type', 'begin_date', 'end_date', 'num_results', 'language', 'tld']
@@ -28,7 +28,7 @@
     // optionalArg = (typeof optionalArg === 'undefined') ? 'default' : optionalArg;
 
   export default function article() {
-
+ // SOME SANITIZE of opts NEEDED with VALID_PARAMS
     return {
       getMostShared: opts => this.request(`${this.apiURL}${ENDPOINT}`,  _.assign({}, default_options, opts)),
     };
