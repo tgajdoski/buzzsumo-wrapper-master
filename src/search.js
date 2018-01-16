@@ -4,9 +4,10 @@ function searcher(type, query) {
 
 export default function search() {
   return {
-    artists: searcher.bind(this, 'artist'),
-    albums: searcher.bind(this, 'album'),
-    tracks: searcher.bind(this, 'track'),
-    playlists: searcher.bind(this, 'playlist'),
+    articles: searcher.bind(this, 'article'),
+    influencers: searcher.bind(this, 'influencer'),
+    shares: searcher.bind(this, 'share'),
+    shared_links: searcher.bind(this, 'shared_link'),
+    trends: searcher.bind(this, 'trend'),
   };
 }

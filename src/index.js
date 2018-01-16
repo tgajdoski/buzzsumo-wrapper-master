@@ -1,16 +1,27 @@
 /* global fetch */
 import search from './search';
-import album from './album';
+import article from './article';
+import influencer from './influencer';
+import share from './share';
+import shared_link from './shared_link';
+import trend from './trend';
 
-import API_URL from './config';
+import {API_UR, API_KEY} from './config';
 import toJSON from './utils';
 
-export default class SpotifyWrapper {
+export default class BuzzSumoWrapper {
   constructor(options) {
     this.apiURL = options.apiURL || API_URL;
-    this.token = options.token;
+    this.apiKey = options.apiKey || API_KEY;
 
-    this.album = album.bind(this)();
+    // this.token = options.token;
+
+    this.article = article.bind(this)();
+    this.influencer = influencer.bind(this)();
+    this.share = share.bind(this)();
+    this.shared_link = shared_link.bind(this)();
+    this.trend = trend.bind(this)();
+
     this.search = search.bind(this)();
   }
 
@@ -20,7 +31,6 @@ export default class SpotifyWrapper {
         Authorization: `'Bearer ${this.token}'`,
       },
     };
-
     return fetch(url, headers).then(toJSON);
   }
 }
