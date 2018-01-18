@@ -24,10 +24,9 @@ export default class BuzzSumoWrapper {
 
   request(url, params) {
     console.log("CALLED with ", params)
-
     return axios.get(url, params)
     .then((response) => {
-      response
+        return response.data;
     })
     .catch((error) => {
       Promise.reject(error);
