@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
-import * as axios from 'axios'
+import MockAdapter from 'axios-mock-adapter';
 
 sinonStubPromise(sinon);
 chai.use(sinonChai);
@@ -33,16 +33,22 @@ describe('BuzzSumoWrapper Library', function () {
 
 
   describe('request method', () => {
-    let stubedAxios;
+    let stubedFetch;
     let promise;
 
     beforeEach( () => {
-      stubedAxios = sinon.stub(global, 'axios');
-      promise = stubedAxios.returnsPromise();
+      stubedFetch = sinon.stub(global, 'axios');
+      promise = stubedFetch.returnsPromise();
+
+      let mockAdapter = new MockAdapter(axios);
+      mockAdapter.onGet('url').reply(200, {
+        data: {}
+      });
+
     });
 
     afterEach( () => {
-      stubedAxios.restore();
+      stubedFetch.restore();
     });
 
     it('should have request method', () => {
@@ -50,23 +56,27 @@ describe('BuzzSumoWrapper Library', function () {
       expect(buzz.request).to.exist;
     });
 
-    it('should call axios when request', () => {
+    it('should call fetch when request', () => {
 
       let buzz = new BuzzSumoWrapper({});
-      buzz.request('url', {});
+      let response = buzz.request('url', {});
       setTimeout(() => {
-        expect(stubedAxios).to.have.been.calledOnce;
+        expect(response).to.have.been.calledOnce;
      }, 0)
-    //  expect(stubedAxios).to.have.been.calledOnce;
+
+    //  expect(stubedFetch).to.have.been.calledOnce;
     });
 
     it('should call fetch with right url passed', () => {
       let buzz = new BuzzSumoWrapper({});
+
       buzz.request('url', {});
+      
+      let response = buzz.request('url', {});
       setTimeout(() => {
-        expect(stubedAxios).to.have.been.calledWith(' WRONG ');
+        expect(response).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
      }, 0)
-      //expect(stubedAxios).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
+      //expect(stubedFetch).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
     });
 
 
