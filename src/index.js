@@ -27,7 +27,7 @@ export default class BuzzSumoWrapper {
 
     return axios.get(url, params)
     .then((response) => {
-      response
+      return response.data;
     })
     .catch((error) => {
       Promise.reject(error);

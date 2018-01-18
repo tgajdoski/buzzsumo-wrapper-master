@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
-import MockAdapter from 'axios-mock-adapter';
+
 
 sinonStubPromise(sinon);
 chai.use(sinonChai);
@@ -33,22 +33,16 @@ describe('BuzzSumoWrapper Library', function () {
 
 
   describe('request method', () => {
-    let stubedFetch;
+    let stubedAxios;
     let promise;
 
     beforeEach( () => {
-      stubedFetch = sinon.stub(global, 'axios');
-      promise = stubedFetch.returnsPromise();
-
-      let mockAdapter = new MockAdapter(axios);
-      mockAdapter.onGet('url').reply(200, {
-        data: {}
-      });
-
+      stubedAxios = sinon.stub(global, 'axios');
+      promise = stubedAxios.returnsPromise();
     });
 
     afterEach( () => {
-      stubedFetch.restore();
+      stubedAxios.restore();
     });
 
     it('should have request method', () => {
@@ -67,18 +61,15 @@ describe('BuzzSumoWrapper Library', function () {
     //  expect(stubedFetch).to.have.been.calledOnce;
     });
 
-    it('should call fetch with right url passed', () => {
+    it('should call axios when request', () => {
       let buzz = new BuzzSumoWrapper({});
-
       buzz.request('url', {});
       
       let response = buzz.request('url', {});
       setTimeout(() => {
-        expect(response).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
+        expect(stubedAxios).to.have.been.calledWith(' WRONG ');
      }, 0)
       //expect(stubedFetch).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
     });
-
-
   });
 });
