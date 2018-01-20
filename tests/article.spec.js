@@ -21,7 +21,6 @@ describe('Article', () => {
     num_results: 20
   }
 
-
   beforeEach( () => {
     buzz = new BuzzSumoWrapper({});
     stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
