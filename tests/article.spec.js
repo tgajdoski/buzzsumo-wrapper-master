@@ -4,11 +4,9 @@ import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
 sinonStubPromise(sinon);
 chai.use(sinonChai);
-let _ = require('lodash');
-global.axios = require('axios');
-
+import * as _ from 'lodash';
 import BuzzSumoWrapper from '../src/index';
-import article from '../src/article';
+//import article from '../src/article';
 
 describe('Article', () => {
   let buzz;
@@ -64,7 +62,7 @@ describe('Article', () => {
             q: 'AI',
         }
     };
-    const articles2 = buzz.article.getMostShared({q: 'AI'})
+    const articles2 = buzz.article.getMostShared(config2.params)
     expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config2.params) );    
     });
 

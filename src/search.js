@@ -1,5 +1,5 @@
 function searcher(type, params) {
- // console.log("TYPE ", type, "PARAMS" , params);
+  console.log("TYPE ", type, "PARAMS" , params);
   return this.request(`${this.apiURL}${type}`, params);
 }
 

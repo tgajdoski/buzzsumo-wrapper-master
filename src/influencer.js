@@ -7,14 +7,16 @@
     // 6) location  (optional), Search the influencers Twitter bio location using this parameter. Most users put a city e.g. London, so that tends to work better than a country. You can pass multiple location separated with the OR operator e.g. London OR New York OR Paris etc
     // 7) must_have_instagram_profile (optional) Only return profiles with an Instagram username. Possible Values true, false (string).
     // 8) verified_only (optional) Only return profiles that have are verified on Twitter (they have a blue check mark). Possible values: true, false (string).
-
+   
+    let _ = require('lodash');
     let ENDPOINT = "influencers.json"
     let VALID_PARAMS = ['q', 'result_type', 'page', 'person_types', 'ignore_broadcasters', 'location']
-   
+    let default_options =  {}
+
     export default function influencer() {
       return {
         // SOME SANITIZE of opts NEEDED
-        getInfluencers: opts => this.request(`${this.apiURL}${ENDPOINT}`, opts),
+        getInfluencers: opts => this.request(`${this.apiURL}${ENDPOINT}`, _.assign({}, default_options, opts)),
       };
     }
   

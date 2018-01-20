@@ -1,58 +1,65 @@
-// import chai, { expect } from 'chai';
-// import sinon from 'sinon';
-// import sinonChai from 'sinon-chai';
-// import sinonStubPromise from 'sinon-stub-promise';
-// sinonStubPromise(sinon);
-// chai.use(sinonChai);
+import chai, { expect } from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import sinonStubPromise from 'sinon-stub-promise';
+sinonStubPromise(sinon);
+chai.use(sinonChai);
+import * as _ from 'lodash';
+import BuzzSumoWrapper from '../src/index';
 
-// global.fetch = require('node-fetch');
+describe('Influencer', () => {
+  let buzz;
+  let stubedAxios;
+  let promise;
 
-// import BuzzSumoWrapper from '../src/index';
-// import article from '../src/article';
+  beforeEach( () => {
+    buzz = new BuzzSumoWrapper({});
+    stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
+    promise = stubedAxios.returnsPromise();
+    promise.resolves({ influencer: 'qnary'});
+  });
 
-// describe('Influencer', () => {
-//   let buzz;
-//   let stubedFetch;
-//   let promise;
+  afterEach( () => {
+    stubedAxios.restore();
+  });
 
-//   beforeEach( () => {
-//     buzz = new BuzzSumoWrapper({});
-//     stubedFetch = sinon.stub(global, 'fetch');
-//     promise = stubedFetch.returnsPromise();
-//   });
+  describe('smoke tests', () => {
+    it('should have getInfluencers method', () => {
+      expect(buzz.influencer.getInfluencers).to.exist;
+    });
+  });
 
-//   afterEach( () => {
-//     stubedFetch.restore();
-//   });
+  describe('getInfluencers', () => {
+    it('should call axios method', () => {
+      const influencers = buzz.influencer.getInfluencers({});
+      expect(stubedAxios).to.have.been.calledOnce;
+    });
 
-//   describe('smoke tests', () => {
-//     it('should have getInfluencers method', () => {
-//       expect(buzz.influencer.getInfluencers).to.exist;
-//     });
-//   });
+    it('should call axios with the correct URL', () => {
+     
+        let config1 = {
+            params: {
+                q: 'Qnary',
+            }
+        };
+          
+        const influencer1 = buzz.influencer.getInfluencers(config1.params);
+          expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json',  config1.params );
+     
+        let config2 = {
+            params: {
+                q: 'AI',
+            }
+        };
+        const influencer2 = buzz.influencer.getInfluencers(config2.params)
+          expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json',  config2.params );
+    });
+     
+    });
 
-//   describe('getInfluencers', () => {
-//     it('should call fetch method', () => {
-//       const influencers = buzz.influencer.getInfluencers({});
-//       expect(stubedFetch).to.have.been.calledOnce;
-//     });
-
-//     it('should call fetch with the correct URL', () => {
-//       const influencer1 = buzz.influencer.getInfluencers({q:'Qnary'});
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/influencers.json?q=Qnary&api_key=buzzsumo_api_key');
-
-//       const influencer2 = buzz.influencer.getInfluencers({q: 'somebody'})
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/influencers.json?q=somebody&api_key=buzzsumo_api_key');
-//     });
-
-//     it('should return the correct data from Promise', () => {
-//       promise.resolves({ influencer: 'qnary'});
-//       const influencer = buzz.influencer.getInfluencers({q: 'Qnary'});
-//       expect(influencer.resolveValue).to.be.eql({ influencer: 'qnary'});
-//     });
-//   });
-
+    it('should return the correct data from Promise', () => {
+      const influencer = buzz.influencer.getInfluencers({q: 'Qnary'});
+      expect(influencer.resolveValue).to.be.eql({ influencer: 'qnary'});
+    });
  
-// });
+});
