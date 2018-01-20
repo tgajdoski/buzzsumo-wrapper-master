@@ -5,13 +5,14 @@ import influencer from './influencer';
 import share from './share';
 import sharedLink from './shared_link';
 import trend from './trend';
-import { API_URL, API_KEY } from './config';
 import toJSON from './utils';
+require('dotenv').config();
+
 
 export default class BuzzSumoWrapper {
   constructor(options) {
-    this.apiURL = options.apiURL ? options.apiURL : API_URL;
-    this.apiKey = options.apiKey ? options.apiKey : API_KEY;
+    this.apiURL = options.apiURL ? options.apiURL : process.env.API_URL;
+    this.apiKey = options.apiKey ? options.apiKey : process.env.API_KEY;
     this.token = options.token;
     this.article = article.bind(this)();
     this.influencer = influencer.bind(this)();
@@ -34,6 +35,8 @@ export default class BuzzSumoWrapper {
 
     return this.axios.get(url, config)
     .then((response) => {
+
+      console.log("response", response);
       return response.data;
     })
     .catch((error) => {

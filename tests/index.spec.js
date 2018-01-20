@@ -62,7 +62,9 @@ describe('BuzzSumoWrapper Library', function () {
 
     it('should call axios when request', () => {
       let config = {
-        params: {}
+        params: {
+          g: 'Marketing',
+        }
       };
       return buzz.request('/url', config).then((res) => {
         expect(stubedAxios).to.have.been.deep.calledWith('/url', config);
