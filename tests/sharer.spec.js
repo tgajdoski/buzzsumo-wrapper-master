@@ -1,58 +1,63 @@
-// import chai, { expect } from 'chai';
-// import sinon from 'sinon';
-// import sinonChai from 'sinon-chai';
-// import sinonStubPromise from 'sinon-stub-promise';
-// sinonStubPromise(sinon);
-// chai.use(sinonChai);
+import chai, { expect } from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import sinonStubPromise from 'sinon-stub-promise';
+sinonStubPromise(sinon);
+chai.use(sinonChai);
+import BuzzSumoWrapper from '../src/index';
 
-// global.fetch = require('node-fetch');
+describe('Sharer', () => {
+  let buzz;
+  let stubedAxios;
+  let promise;
 
-// import BuzzSumoWrapper from '../src/index';
-// import article from '../src/article';
+  beforeEach( () => {
+    buzz = new BuzzSumoWrapper({});
+    stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
+    promise = stubedAxios.returnsPromise();
+    promise.resolves({ sharer: 'qnary' });
+  });
 
-// describe('Sharer', () => {
-//   let buzz;
-//   let stubedFetch;
-//   let promise;
+  afterEach( () => {
+    stubedAxios.restore();
+  });
 
-//   beforeEach( () => {
-//     buzz = new BuzzSumoWrapper({});
-//     stubedFetch = sinon.stub(global, 'fetch');
-//     promise = stubedFetch.returnsPromise();
-//   });
+  describe('smoke tests', () => {
+    it('should have getSharers method', () => {
+      expect(buzz.sharer.getSharers).to.exist;
+    });
+  });
 
-//   afterEach( () => {
-//     stubedFetch.restore();
-//   });
+  describe('getShares', () => {
+    it('should call axios method', () => {
+      const sharers = buzz.sharer.getSharers({});
+      expect(stubedAxios).to.have.been.calledOnce;
+    });
 
-//   describe('smoke tests', () => {
-//     it('should have getSharers method', () => {
-//       expect(buzz.sharer.getSharers).to.exist;
-//     });
-//   });
+    it('should call axios with the correct URL', () => {
+        let config1 = {
+            params: {
+                article_id: 'Qnary',
+            }
+        };
 
-//   describe('getShares', () => {
-//     it('should call fetch method', () => {
-//       const sharers = buzz.sharer.getSharers({});
-//       expect(stubedFetch).to.have.been.calledOnce;
-//     });
+        const sharer1 = buzz.sharer.getSharers(config1.params);
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shares.json', config1.params);
 
-//     it('should call fetch with the correct URL', () => {
-//       const sharer1 = buzz.sharer.getSharers({article_id:'Qnary'});
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/shares.json?article_id=Qnary&api_key=buzzsumo_api_key');
+        let config2 = {
+            params: {
+                article_id: 'someID',
+            }
+        };
+        const sharer2 = buzz.sharer.getSharers(config2.params)
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shares.json', config2.params);
+    });
 
-//       const sharer2 = buzz.sharer.getSharers({article_id: 'someId'})
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/shares.json?article_id=someId&api_key=buzzsumo_api_key');
-//     });
-
-//     it('should return the correct data from Promise', () => {
-//       promise.resolves({ sharer: 'qnary'});
-//       const sharer = buzz.sharer.getSharers({article_id: 'Qnary'});
-//       expect(sharer.resolveValue).to.be.eql({ sharer: 'qnary'});
-//     });
-//   });
+    it('should return the correct data from Promise', () => {
+      const sharer = buzz.sharer.getSharers({article_id: 'Qnary'});
+      expect(sharer.resolveValue).to.be.eql({ sharer: 'qnary'});
+    });
+  });
 
  
-// });
+});

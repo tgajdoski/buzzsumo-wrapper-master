@@ -12,14 +12,14 @@ describe('Influencer', () => {
   let stubedAxios;
   let promise;
 
-  beforeEach( () => {
+  beforeEach(() => {
     buzz = new BuzzSumoWrapper({});
     stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
     promise = stubedAxios.returnsPromise();
-    promise.resolves({ influencer: 'qnary'});
+    promise.resolves({ influencer: 'qnary' });
   });
 
-  afterEach( () => {
+  afterEach(() => {
     stubedAxios.restore();
   });
 
@@ -36,30 +36,30 @@ describe('Influencer', () => {
     });
 
     it('should call axios with the correct URL', () => {
-     
-        let config1 = {
-            params: {
-                q: 'Qnary',
-            }
-        };
-          
-        const influencer1 = buzz.influencer.getInfluencers(config1.params);
-          expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json',  config1.params );
-     
-        let config2 = {
-            params: {
-                q: 'AI',
-            }
-        };
-        const influencer2 = buzz.influencer.getInfluencers(config2.params)
-          expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json',  config2.params );
-    });
-     
+
+      let config1 = {
+        params: {
+          q: 'Qnary',
+        }
+      };
+
+      const influencer1 = buzz.influencer.getInfluencers(config1.params);
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', config1.params);
+
+      let config2 = {
+        params: {
+          q: 'AI',
+        }
+      };
+      const influencer2 = buzz.influencer.getInfluencers(config2.params)
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', config2.params);
     });
 
-    it('should return the correct data from Promise', () => {
-      const influencer = buzz.influencer.getInfluencers({q: 'Qnary'});
-      expect(influencer.resolveValue).to.be.eql({ influencer: 'qnary'});
-    });
- 
+  });
+
+  it('should return the correct data from Promise', () => {
+    const influencer = buzz.influencer.getInfluencers({ q: 'Qnary' });
+    expect(influencer.resolveValue).to.be.eql({ influencer: 'qnary' });
+  });
+
 });

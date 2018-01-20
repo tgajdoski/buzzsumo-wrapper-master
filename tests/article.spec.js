@@ -12,8 +12,8 @@ describe('Article', () => {
   let buzz;
   let stubedAxios;
   let promise;
-  
-  let default_options =  {
+
+  let default_options = {
     result_type: "total",
     page: 0,
     num_days: 1,
@@ -21,14 +21,14 @@ describe('Article', () => {
     num_results: 20
   }
 
-  beforeEach( () => {
+  beforeEach(() => {
     buzz = new BuzzSumoWrapper({});
     stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
     promise = stubedAxios.returnsPromise();
-    promise.resolves({ article: 'qnary'});
+    promise.resolves({ article: 'qnary' });
   });
 
-  afterEach( () => {
+  afterEach(() => {
     stubedAxios.restore();
   });
 
@@ -46,30 +46,27 @@ describe('Article', () => {
     });
 
     it('should call axios with the correct URL', () => {
-
-    let config1 = {
+      let config1 = {
         params: {
-            q: 'Qnary',
+          q: 'Qnary',
         }
-    };
-      
+      };
       const articles1 = buzz.article.getMostShared(config1.params);
-      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config1.params) );
- 
-    let config2 = {
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config1.params));
+      let config2 = {
         params: {
-            q: 'AI',
+          q: 'AI',
         }
-    };
-    const articles2 = buzz.article.getMostShared(config2.params)
-    expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config2.params) );    
+      };
+      const articles2 = buzz.article.getMostShared(config2.params)
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config2.params));
     });
 
     it('should return the correct data from Promise', () => {
-      const article = buzz.article.getMostShared({q: 'Qnary'});
-      expect(article.resolveValue).to.be.eql({ article: 'qnary'});
+      const article = buzz.article.getMostShared({ q: 'Qnary' });
+      expect(article.resolveValue).to.be.eql({ article: 'qnary' });
     });
   });
 
- 
+
 });

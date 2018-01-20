@@ -9,15 +9,15 @@ sinonStubPromise(sinon);
 import BuzzSumoWrapper from '../src/index';
 
 describe('Search', () => {
-    let stubedAxios;
-    let promise;
-    let buzz = new BuzzSumoWrapper({});
+  let stubedAxios;
+  let promise;
+  let buzz = new BuzzSumoWrapper({});
 
-  beforeEach( () => {
+  beforeEach(() => {
     stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
   });
 
-  afterEach( () => {
+  afterEach(() => {
     stubedAxios.restore();
   });
 
@@ -43,23 +43,17 @@ describe('Search', () => {
     });
   });
 
- 
+
   // articles
   describe('buzz.search.articles', () => {
     it('should call fetch function', () => {
-      const articles = buzz.search.articles({q: 'Qnary'});
+      const articles = buzz.search.articles({ q: 'Qnary' });
       expect(stubedAxios).to.have.been.calledOnce;
     });
 
 
     it('should call fetch with the correct URL', () => {
-    //   const articles1 = buzz.search.articles({q: 'Qnary'});
-    //   expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/articles.json?q=Qnary&api_key=buzzsumo_api_key')
-
-    //   const articles2 = buzz.search.articles({q: 'AI'});
-    //   expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/articles.json?q=AI&api_key=buzzsumo_api_key')
-    
-    let default_options =  {
+      let default_options = {
         result_type: "total",
         page: 0,
         num_days: 1,
@@ -67,104 +61,136 @@ describe('Search', () => {
         num_results: 20
       }
 
-    let config1 = {
+      let config1 = {
         params: {
-            q: 'Qnary',
+          q: 'Qnary',
         }
-    };
+      };
       const articles1 = buzz.search.articles(_.assign({}, default_options, config1.params));
-      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config1.params) );
- 
-    let config2 = {
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config1.params));
+
+      let config2 = {
         params: {
-            q: 'AI',
+          q: 'AI',
         }
-    };
-    const articles2 = buzz.search.articles(_.assign({}, default_options, config2.params));
-    expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config2.params) );    
+      };
+      const articles2 = buzz.search.articles(_.assign({}, default_options, config2.params));
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/articles.json', _.assign({}, default_options, config2.params));
     });
   });
 
   // influencers
   describe('buzz.search.influencers', () => {
     it('should call fetch function', () => {
-      const influencers = buzz.search.influencers({q: 'Qnary'});
+      const influencers = buzz.search.influencers({ q: 'Qnary' });
       expect(stubedAxios).to.have.been.calledOnce;
     });
 
     it('should call fetch with the correct URL', () => {
-        let default_options =  {}
-
-    //   const influencers1 = buzz.search.influencers({q: 'Qnary'});
-    //   expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/influencers.json?q=Qnary&api_key=buzzsumo_api_key')
-
-    //   const influencers2 = buzz.search.influencers({q: 'AI'});
-    //   expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/influencers.json?q=AI&api_key=buzzsumo_api_key')
-    let config1 = {
+      let default_options = {}
+      let config1 = {
         params: {
-            q: 'Qnary',
+          q: 'Qnary',
         }
-    };
+      };
       const influencers1 = buzz.search.influencers(_.assign({}, default_options, config1.params));
-      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', _.assign({}, default_options, config1.params) );
- 
-    let config2 = {
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', _.assign({}, default_options, config1.params));
+
+      let config2 = {
         params: {
-            q: 'AI',
+          q: 'AI',
         }
-    };
-    const influencers2 = buzz.search.influencers(_.assign({}, default_options, config2.params));
-    expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', _.assign({}, default_options, config2.params) );  
+      };
+      const influencers2 = buzz.search.influencers(_.assign({}, default_options, config2.params));
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/influencers.json', _.assign({}, default_options, config2.params));
     });
   });
 
-//   // shares
-//   describe('buzz.search.shares', () => {
-//     it('should call fetch function', () => {
-//       const shares = buzz.search.shares({q: 'Qnary'});
-//       expect(stubedAxios).to.have.been.calledOnce;
-//     });
+    // shares
+    describe('buzz.search.shares', () => {
+      it('should call fetch function', () => {
+        const shares = buzz.search.shares({q: 'Qnary'});
+        expect(stubedAxios).to.have.been.calledOnce;
+      });
 
-//     it('should call fetch with the correct URL', () => {
-//       const shares1 = buzz.search.shares({q: 'Qnary'});
-//       expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/shares.json?q=Qnary&api_key=buzzsumo_api_key')
+      it('should call fetch with the correct URL', () => {
 
-//       const shares2 = buzz.search.shares({q: 'AI'});
-//       expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/shares.json?q=AI&api_key=buzzsumo_api_key')
-//     });
-//   });
+        let default_options = {}
+      let config1 = {
+        params: {
+          q: 'Qnary',
+        }
+      };
+      const shares1 = buzz.search.shares(_.assign({}, default_options, config1.params));
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shares.json', _.assign({}, default_options, config1.params));
 
-//   //shared_links
-//   describe('buzz.search.shared_links', () => {
-//     it('should call fetch function', () => {
-//       const shared_links = buzz.search.shared_links({q: 'Qnary'});
-//       expect(stubedAxios).to.have.been.calledOnce;
-//     });
+      let config2 = {
+        params: {
+          q: 'AI',
+        }
+      };
+      const shares2 = buzz.search.shares(_.assign({}, default_options, config2.params));
+      expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shares.json', _.assign({}, default_options, config2.params));
+      });
 
-//     it('should call fetch with the correct URL', () => {
-//       const shared_links1 = buzz.search.shared_links({q: 'Qnary'});
-//       expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/shared_links.json?q=Qnary&api_key=buzzsumo_api_key')
+      
+    });
 
-//       const shared_links2 = buzz.search.shared_links({q: 'AI'});
-//       expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/shared_links.json?q=AI&api_key=buzzsumo_api_key')
-//     });
-//   });
+    //shared_links
+    describe('buzz.search.shared_links', () => {
+      it('should call fetch function', () => {
+        const shared_links = buzz.search.shared_links({q: 'Qnary'});
+        expect(stubedAxios).to.have.been.calledOnce;
+      });
 
-//  //trends
-//  describe('buzz.search.trends', () => {
-//   it('should call fetch function', () => {
-//     const trends = buzz.search.trends({q: 'Qnary'});
-//     expect(stubedAxios).to.have.been.calledOnce;
-//   });
+      it('should call fetch with the correct URL', () => {
 
-//   it('should call fetch with the correct URL', () => {
-//     const trends1 = buzz.search.trends({q: 'Qnary'});
-//     expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/trends.json?q=Qnary&api_key=buzzsumo_api_key')
+        let default_options = {}
+        let config1 = {
+          params: {
+            q: 'Qnary',
+          }
+        };
+        const shared_links1 = buzz.search.shared_links(_.assign({}, default_options, config1.params));
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shared_links.json', _.assign({}, default_options, config1.params));
+  
+        let config2 = {
+          params: {
+            q: 'AI',
+          }
+        };
+        const shared_links2 = buzz.search.shared_links(_.assign({}, default_options, config2.params));
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shared_links.json', _.assign({}, default_options, config2.params));
+      });
+    });
 
-//     const trends2 = buzz.search.trends({q: 'AI'});
-//     expect(stubedAxios).to.have.been.calledWith('http://api.buzzsumo.com/search/trends.json?q=AI&api_key=buzzsumo_api_key')
-//   });
-// });
+   //trends
+   describe('buzz.search.trends', () => {
+    it('should call fetch function', () => {
+      const trends = buzz.search.trends({q: 'Qnary'});
+      expect(stubedAxios).to.have.been.calledOnce;
+    });
+
+    it('should call fetch with the correct URL', () => {
+
+      let default_options = {}
+        let config1 = {
+          params: {
+            q: 'Qnary',
+          }
+        };
+        const trend1 = buzz.search.trends(_.assign({}, default_options, config1.params));
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/trends.json', _.assign({}, default_options, config1.params));
+  
+        let config2 = {
+          params: {
+            q: 'AI',
+          }
+        };
+        const trend2 = buzz.search.trends(_.assign({}, default_options, config2.params));
+        expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/trends.json', _.assign({}, default_options, config2.params));
+    });
+  });
 
 
 });

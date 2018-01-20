@@ -1,58 +1,64 @@
-// import chai, { expect } from 'chai';
-// import sinon from 'sinon';
-// import sinonChai from 'sinon-chai';
-// import sinonStubPromise from 'sinon-stub-promise';
-// sinonStubPromise(sinon);
-// chai.use(sinonChai);
+import chai, { expect } from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import sinonStubPromise from 'sinon-stub-promise';
+sinonStubPromise(sinon);
+chai.use(sinonChai);
+import BuzzSumoWrapper from '../src/index';
 
-// global.fetch = require('node-fetch');
 
-// import BuzzSumoWrapper from '../src/index';
-// import article from '../src/article';
+describe('Shared_Link', () => {
+    let buzz;
+    let stubedAxios;
+    let promise;
 
-// describe('Shared_Link', () => {
-//   let buzz;
-//   let stubedFetch;
-//   let promise;
+    beforeEach(() => {
+        buzz = new BuzzSumoWrapper({});
+        stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
+        promise = stubedAxios.returnsPromise();
+        promise.resolves({ shared_link: 'qnary' });
+    });
 
-//   beforeEach( () => {
-//     buzz = new BuzzSumoWrapper({});
-//     stubedFetch = sinon.stub(global, 'fetch');
-//     promise = stubedFetch.returnsPromise();
-//   });
+    afterEach(() => {
+        stubedAxios.restore();
+    });
 
-//   afterEach( () => {
-//     stubedFetch.restore();
-//   });
+    describe('smoke tests', () => {
+        it('should have getSharers method', () => {
+            expect(buzz.shared_link.getSharedLinks).to.exist;
+        });
+    });
 
-//   describe('smoke tests', () => {
-//     it('should have getSharers method', () => {
-//       expect(buzz.shared_link.getSharedLinks).to.exist;
-//     });
-//   });
+    describe('getSharedLinks', () => {
+        it('should call axios method', () => {
+            const sharers = buzz.shared_link.getSharedLinks({});
+            expect(stubedAxios).to.have.been.calledOnce;
+        });
 
-//   describe('getSharedLinks', () => {
-//     it('should call fetch method', () => {
-//       const sharers = buzz.shared_link.getSharedLinks({});
-//       expect(stubedFetch).to.have.been.calledOnce;
-//     });
+        it('should call axios with the correct URL', () => {
+            let config1 = {
+                params: {
+                    username: 'Qnary',
+                }
+            };
 
-//     it('should call fetch with the correct URL', () => {
-//       const shared_link1 = buzz.shared_link.getSharedLinks({username :'Qnary'});
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/shared_links.json?username=Qnary&api_key=buzzsumo_api_key');
+            const shared_link1 = buzz.shared_link.getSharedLinks(config1.params);
+            expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shared_links.json', config1.params);
 
-//       const shared_link2 = buzz.shared_link.getSharedLinks({username : 'somebody'})
-//       expect(stubedFetch).to.have.been
-//         .calledWith('http://api.buzzsumo.com/search/shared_links.json?username=somebody&api_key=buzzsumo_api_key');
-//     });
+            let config2 = {
+                params: {
+                    username: 'somebody',
+                }
+            };
+            const shared_link2 = buzz.shared_link.getSharedLinks(config2.params)
+            expect(stubedAxios).to.have.been.deep.calledWith('http://api.buzzsumo.com/search/shared_links.json', config2.params);
+        });
 
-//     it('should return the correct data from Promise', () => {
-//       promise.resolves({ shared_link: 'qnary'});
-//       const shared_link = buzz.shared_link.getSharedLinks({username: 'Qnary'});
-//       expect(shared_link.resolveValue).to.be.eql({ shared_link: 'qnary'});
-//     });
-//   });
+        it('should return the correct data from Promise', () => {
+            const shared_link = buzz.shared_link.getSharedLinks({ username: 'Qnary' });
+            expect(shared_link.resolveValue).to.be.eql({ shared_link: 'qnary' });
+        });
+    });
 
- 
-// });
+
+});
