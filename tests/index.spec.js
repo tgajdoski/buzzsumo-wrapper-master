@@ -35,10 +35,10 @@ describe('BuzzSumoWrapper Library', function () {
   describe('request method', () => {
     let stubedAxios;
     let promise;
+    let buzz = new BuzzSumoWrapper({});
 
     beforeEach( () => {
-      stubedAxios = sinon.stub(global, 'axios');
-      promise = stubedAxios.returnsPromise();
+      stubedAxios = sinon.stub(buzz.axios, 'get').returns(new Promise((r) => r({})));
     });
 
     afterEach( () => {
@@ -46,30 +46,27 @@ describe('BuzzSumoWrapper Library', function () {
     });
 
     it('should have request method', () => {
-      let buzz = new BuzzSumoWrapper({});
       expect(buzz.request).to.exist;
     });
 
-    it('should call fetch when request', () => {
-
-      let buzz = new BuzzSumoWrapper({});
-      let response = buzz.request('url', {});
-      setTimeout(() => {
-        expect(response).to.have.been.calledOnce;
-     }, 0)
-
-    //  expect(stubedFetch).to.have.been.calledOnce;
+    it('should call axios when request', () => {
+      let config = {
+        params: {
+          ID: 12345,
+        }
+      };
+      return buzz.request('/url', config).then((res) => {
+        expect(stubedAxios.callCount).to.equal(1);
+      });
     });
 
     it('should call axios when request', () => {
-      let buzz = new BuzzSumoWrapper({});
-      buzz.request('url', {});
-      
-      let response = buzz.request('url', {});
-      setTimeout(() => {
-        expect(stubedAxios).to.have.been.calledWith(' WRONG ');
-     }, 0)
-      //expect(stubedFetch).to.have.been.calledWith('url?&api_key=buzzsumo_api_key');
+      let config = {
+        params: {}
+      };
+      return buzz.request('/url', config).then((res) => {
+        expect(stubedAxios).to.have.been.deep.calledWith('/url', config);
+      });
     });
   });
 });

@@ -18,14 +18,21 @@ export default class BuzzSumoWrapper {
     this.sharer = share.bind(this)();
     this.shared_link = sharedLink.bind(this)();
     this.trend = trend.bind(this)();
-
     this.search = search.bind(this)();
+
+    this.axios = axios.create({
+      baseURL: this.apiURL,
+    });
   }
 
-  request(url, params) {
-    console.log("CALLED with ", params)
 
-    return axios.get(url, params)
+  
+  request(url, config) {
+    if (config.params)
+       config.params["api_key"] = this.apiKey;
+    console.log('config', config);
+
+    return this.axios.get(url, config)
     .then((response) => {
       return response.data;
     })
